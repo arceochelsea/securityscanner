@@ -6,6 +6,9 @@ let securityScan = {
     badgeIdOutBuilding: [],
     employeeNameOutBuilding: [],
     inScan: function () {
+        if (this.badgeIdInBuilding.includes (this.currentBadgeIdScanned)) {
+            console.log(`:::WARNING ${this.currentEmployeeNameScanned} IS ALREADY IN THE BUILDING!:::`); 
+        } else 
         this.badgeIdInBuilding.push(this.currentBadgeIdScanned);
         this.employeeNameInBuilding.push(this.currentEmployeeNameScanned);
         console.log(`:::::In The Building::::`);
@@ -13,9 +16,11 @@ let securityScan = {
         console.log(`Names: ${this.employeeNameInBuilding}`);
     },
     outScan: function () {
-       // if (this.badgeIdOutBuilding == this.badgeIdInBuilding)
-        this.badgeIdOutBuilding.push(this.currentBadgeIdScanned);
-        this.employeeNameOutBuilding.push(this.currentEmployeeNameScanned);
+        if (this.badgeIdOutBuilding.includes (this.currentBadgeIdScanned)) {
+            console.log(`:::WARNING ${this.currentEmployeeNameScanned} DID NOT ENTER THE BUILDING GARAGE!:::`);
+        } else
+        this.badgeIdOutBuilding.push(   this.badgeIdInBuilding.splice(  this.badgeIdInBuilding.indexOf(this.currentBadgeIdScanned), 1    ).pop()  ); 
+        this.employeeNameOutBuilding.push(    this.employeeNameInBuilding.splice(    this.employeeNameInBuilding.indexOf(this.currentEmployeeNameScanned), 1   ).pop()   );
         console.log(`::::Out The Building::::`);
         console.log(`ID's: ${this.badgeIdOutBuilding}`);
         console.log(`Names: ${this.employeeNameOutBuilding}`);
@@ -32,8 +37,4 @@ function scanId (id, name, inout) {
     }
 scanId("1234", "chelsea", "in");
 scanId("1234", "chelsea", "out");
-scanId("2345", "patrick", "out");
-
-//once printed chelsea is in building, then out.
-//then another output will result in chelsea and patrick out of building. but chelsea is not removed.
-//when should chelsea be removed? 
+scanId("2345", "patrick", "in");
